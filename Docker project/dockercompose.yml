@@ -1,0 +1,49 @@
+version: '4.28.0'
+services:
+ www:
+   image: php:8.2-apache
+   container_name: php82
+   volumes:
+     - "./src:/var/www/html"
+
+   ports:
+     - 8080:80
+     - 443:443
+
+   build: 
+      context: ./src
+      dockerfile: Dockerfile-web
+
+   depends_on:
+     - mysql
+
+ mysql:
+   container_name: mysql8
+
+   build:
+    context: ./DataBase
+    dockerfile: Dockerfile-db
+   
+   restart: always
+   
+   environment: 
+     MYSQL_DATABASE: 'Students'
+     MYSQL_ROOT_PASSWORD: '1234'
+   
+   ports:
+    - '3307:3306'
+ 
+ php82:
+   image: php:8.2-apache
+   networks:
+     - ronnet
+ 
+ mysql8:
+   image: mysql:latest
+   networks:
+      - ronnet
+
+networks:
+    ronnet:
+      driver: bridge
+

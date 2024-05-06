@@ -1,0 +1,5 @@
+FROM mysql:latest
+
+#Setting an environment variable for password to access the database
+ENV MYSQL_ROOT_PASSWORD=1234
+COPY ./studentdb.sql /docker-entrypoint-initdb.d/
